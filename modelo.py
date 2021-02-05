@@ -1,6 +1,3 @@
-import random
-
-
 class Programa:
 
     def __init__(self, nome, ano):
@@ -67,7 +64,6 @@ class Playlist:
     def __init__(self, nome, programas):
         self.__nome = nome
         self.__programas = programas
-        self.__tamanho = len(programas)
 
     @property
     def nome(self):
@@ -79,7 +75,7 @@ class Playlist:
 
     @property
     def tamanho(self):
-        return self.__tamanho
+        return len(self.programas)
 
     @nome.setter
     def nome(self, novo_nome):
@@ -88,29 +84,38 @@ class Playlist:
     def adiciona_programa(self, programa):
         self.__programas.append(programa)
 
-    def remove_programa(self, programa):
-        self.__programas.remove(programa)
+    def remove_programa(self, nome_do_programa):
+        programa = self.procura_programa_na_lista(nome_do_programa)
+        self.__programas.remove(programa) if isinstance(programa, Programa) else None
+
+    def procura_programa_na_lista(self, nome_do_programa):
+        nome_do_programa = nome_do_programa.title()
+        for programa in self.programas:
+            if programa.nome == nome_do_programa:
+                return programa
+
+    def exibe_informacoes_programa(self, nome_do_programa):
+        programa = self.procura_programa_na_lista(nome_do_programa)
+        print("\n{}".format(programa)) if isinstance(programa, Programa) else None
+
+    def exibe_programas(self):
+        for programa in self.programas:
+            print("\n{}".format(programa))
 
 
 def teste():
-    star_wars_ep_um = Filme("star wars - a ameaca fantasma", 1999, 136)
-    mandalorian = Serie("the mandalorian", 2019, 2)
-    toy_story = Filme("toy story", 1995, 81)
-    witcher = Serie("the witcher", 2019, 1)
-    playlist = Playlist("nome", [star_wars_ep_um, mandalorian, toy_story, witcher])
-    playlist.remove_programa(star_wars_ep_um)
+
+    playlist = Playlist("Maratona para final de semana", [])
+    playlist.adiciona_programa(Filme("star wars - a ameaca fantasma", 1999, 136))
+    playlist.adiciona_programa(Serie("the mandalorian", 2019, 2))
+    playlist.adiciona_programa(Filme("toy story", 1995, 81))
+    playlist.adiciona_programa(Serie("the witcher", 2019, 1))
     playlist.adiciona_programa(Filme("homem aranha", 2002, 121))
-
-    for programa in playlist.programas:
-
-        contador = 0
-        quantidade_aleatoria_de_likes = random.randint(0, 100)
-
-        while contador < quantidade_aleatoria_de_likes:
-            programa.incrementa_like()
-            contador += 1
-
-        print("\n{}".format(programa))
+    playlist.exibe_informacoes_programa("the mandalorian")
+    playlist.exibe_informacoes_programa("pokemon")
+    playlist.remove_programa("the mandalorian")
+    playlist.remove_programa("south park")
+    playlist.exibe_programas()
 
 
 if __name__ == "__main__":

@@ -65,6 +65,12 @@ class Playlist:
         self.__nome = nome
         self.__programas = programas
 
+    def __getitem__(self, item):
+        return self.programas[item]
+
+    def __len__(self):
+        return len(self.programas)
+
     @property
     def nome(self):
         return self.__nome
@@ -72,10 +78,6 @@ class Playlist:
     @property
     def programas(self):
         return self.__programas
-
-    @property
-    def tamanho(self):
-        return len(self.programas)
 
     @nome.setter
     def nome(self, novo_nome):
@@ -90,7 +92,7 @@ class Playlist:
 
     def procura_programa_na_lista(self, nome_do_programa):
         nome_do_programa = nome_do_programa.title()
-        for programa in self.programas:
+        for programa in self:
             if programa.nome == nome_do_programa:
                 return programa
 
@@ -99,7 +101,7 @@ class Playlist:
         print("\n{}".format(programa)) if isinstance(programa, Programa) else None
 
     def exibe_programas(self):
-        for programa in self.programas:
+        for programa in self:
             print("\n{}".format(programa))
 
 
@@ -111,10 +113,12 @@ def teste():
     playlist.adiciona_programa(Filme("toy story", 1995, 81))
     playlist.adiciona_programa(Serie("the witcher", 2019, 1))
     playlist.adiciona_programa(Filme("homem aranha", 2002, 121))
+    print("\nTamanho da playlist: {}".format(len(playlist)))
     playlist.exibe_informacoes_programa("the mandalorian")
     playlist.exibe_informacoes_programa("pokemon")
     playlist.remove_programa("the mandalorian")
     playlist.remove_programa("south park")
+    print("\nNovo tamanho da playlist: {}".format(len(playlist)))
     playlist.exibe_programas()
 
 
